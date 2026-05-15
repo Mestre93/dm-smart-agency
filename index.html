@@ -3,846 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DM Smart Agency - Agentes de IA para Seu Negócio</title>
-    <meta name="description" content="Transforme seu negócio com Agentes de IA inteligentes. Atendimento 24/7, automação de processos e resultados reais para micro e pequenas empresas.">
+    <title>digita — agentes de ia para o seu whatsapp</title>
+    <meta name="description" content="Agentes de IA personalizados para micro e pequenas empresas. Atendimento 24/7 pelo WhatsApp, agendamentos automáticos e muito mais.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Cores baseadas na logo */
-            --color-bg: #0a1628;
-            --color-surface: #0f1e33;
-            --color-primary: #4a9fd8;
-            --color-primary-light: #5db3ea;
-            --color-primary-dark: #3a8bc4;
-            --color-accent: #6ec9f7;
-            --color-text: #e8f1f8;
-            --color-text-dim: #8ba3b8;
-            --color-border: #1a2d45;
-            --color-frame: #5db3ea;
-            --font-display: 'Space Mono', monospace;
-            --font-body: 'Work Sans', sans-serif;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: var(--font-body);
-            background: var(--color-bg);
-            color: var(--color-text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Grid Background Effect */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(var(--color-border) 1px, transparent 1px),
-                linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
-            background-size: 50px 50px;
-            opacity: 0.4;
-            z-index: -1;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        /* Glowing orb effect */
-        .glow-orb {
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--color-primary) 0%, transparent 70%);
-            opacity: 0.12;
-            filter: blur(60px);
-            pointer-events: none;
-            z-index: -1;
-            animation: orbFloat 15s ease-in-out infinite;
-        }
-
-        .glow-orb-1 { top: -200px; left: -200px; }
-        .glow-orb-2 { bottom: -200px; right: -200px; animation-delay: -7s; }
-
-        @keyframes orbFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(50px, 50px) scale(1.1); }
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 22, 40, 0.85);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--color-border);
-            z-index: 1000;
-            animation: slideDown 0.6s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            text-decoration: none;
-        }
-
-        .logo-img {
-            height: 45px;
-            width: auto;
-            transition: transform 0.3s ease;
-        }
-
-        .logo-container:hover .logo-img {
-            transform: scale(1.05);
-        }
-
-        .logo-text {
-            font-family: var(--font-display);
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--color-text);
-            letter-spacing: -0.5px;
-        }
-
-        .cta-button {
-            background: var(--color-primary);
-            color: #ffffff;
-            padding: 0.75rem 1.8rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-family: var(--font-body);
-            display: inline-block;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        .cta-button:hover::before {
-            left: 100%;
-        }
-
-        .cta-button:hover {
-            background: var(--color-primary-light);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(74, 159, 216, 0.4);
-        }
-
-        /* Hero Section */
-        .hero {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 180px 2rem 120px;
-            text-align: center;
-        }
-
-        .hero-logo {
-            width: 200px;
-            height: auto;
-            margin: 0 auto 2rem;
-            display: block;
-            animation: fadeInUp 0.8s ease-out 0.1s both;
-        }
-
-        .hero-tag {
-            display: inline-block;
-            font-family: var(--font-display);
-            font-size: 0.85rem;
-            color: var(--color-primary);
-            border: 1px solid var(--color-primary);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            margin-bottom: 2rem;
-            animation: fadeInUp 0.8s ease-out 0.2s both;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h1 {
-            font-size: clamp(2.5rem, 5vw, 4.5rem);
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--color-text) 0%, var(--color-accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: fadeInUp 0.8s ease-out 0.4s both;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--color-text-dim);
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            font-weight: 300;
-            animation: fadeInUp 0.8s ease-out 0.6s both;
-        }
-
-        .hero-cta-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 0.8s ease-out 0.8s both;
-        }
-
-        .cta-secondary {
-            background: transparent;
-            color: var(--color-text);
-            border: 1px solid var(--color-border);
-        }
-
-        .cta-secondary:hover {
-            background: var(--color-surface);
-            border-color: var(--color-primary);
-            box-shadow: none;
-        }
-
-        /* Stats Section */
-        .stats {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 2rem;
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-5px);
-            border-color: var(--color-primary);
-            box-shadow: 0 10px 30px rgba(74, 159, 216, 0.2);
-        }
-
-        .stat-number {
-            font-family: var(--font-display);
-            font-size: 3rem;
-            color: var(--color-primary);
-            font-weight: 700;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--color-text-dim);
-            font-size: 1rem;
-        }
-
-        /* Features Section */
-        .features {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 6rem 2rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            color: var(--color-text-dim);
-            font-size: 1.15rem;
-            max-width: 600px;
-            margin: 0 auto 4rem;
-            font-weight: 300;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            padding: 2.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 0;
-            background: var(--color-primary);
-            transition: height 0.3s ease;
-        }
-
-        .feature-card:hover::before {
-            height: 100%;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--color-primary);
-        }
-
-        .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--color-text);
-        }
-
-        .feature-card p {
-            color: var(--color-text-dim);
-            line-height: 1.7;
-        }
-
-        /* How It Works */
-        .how-it-works {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 6rem 2rem;
-            background: var(--color-surface);
-            border-radius: 20px;
-            border: 1px solid var(--color-border);
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 3rem;
-            margin-top: 4rem;
-        }
-
-        .step {
-            text-align: center;
-            position: relative;
-        }
-
-        .step-number {
-            font-family: var(--font-display);
-            font-size: 4rem;
-            color: var(--color-primary);
-            opacity: 0.2;
-            font-weight: 700;
-            line-height: 1;
-            margin-bottom: 1rem;
-        }
-
-        .step h3 {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-        }
-
-        .step p {
-            color: var(--color-text-dim);
-        }
-
-        /* Use Cases */
-        .use-cases {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 6rem 2rem;
-        }
-
-        .use-cases-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .use-case {
-            background: linear-gradient(135deg, var(--color-surface) 0%, rgba(15, 30, 51, 0.5) 100%);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-        }
-
-        .use-case:hover {
-            transform: scale(1.05);
-            border-color: var(--color-primary);
-            box-shadow: 0 15px 40px rgba(74, 159, 216, 0.25);
-        }
-
-        .use-case-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .use-case h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .use-case p {
-            color: var(--color-text-dim);
-            font-size: 0.95rem;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            max-width: 900px;
-            margin: 6rem auto;
-            padding: 4rem 2rem;
-            text-align: center;
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 10px,
-                rgba(255, 255, 255, 0.05) 10px,
-                rgba(255, 255, 255, 0.05) 20px
-            );
-            animation: stripesMove 20s linear infinite;
-        }
-
-        @keyframes stripesMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        .cta-section-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta-section h2 {
-            font-size: 2.5rem;
-            color: #ffffff;
-            margin-bottom: 1rem;
-        }
-
-        .cta-section p {
-            font-size: 1.2rem;
-            color: #ffffff;
-            opacity: 0.95;
-            margin-bottom: 2rem;
-        }
-
-        .cta-section .cta-button {
-            background: #ffffff;
-            color: var(--color-primary);
-            font-size: 1.1rem;
-            padding: 1rem 2.5rem;
-        }
-
-        .cta-section .cta-button:hover {
-            background: var(--color-bg);
-            color: var(--color-text);
-            box-shadow: 0 10px 30px rgba(10, 22, 40, 0.5);
-        }
-
-        /* Footer */
-        footer {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem 2rem;
-            border-top: 1px solid var(--color-border);
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-logo-container {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .footer-logo-img {
-            height: 50px;
-            width: auto;
-        }
-
-        .footer-logo-text {
-            font-family: var(--font-display);
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--color-text);
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: var(--color-text-dim);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--color-primary);
-        }
-
-        .footer-bottom {
-            color: var(--color-text-dim);
-            font-size: 0.9rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--color-border);
-            text-align: center;
-        }
+            --lilas: #B8A9E8;
+            --lilas-escuro: #9585CF;
+            --lilas-claro: #EAE5FF;
+            --menta: #9ED8C0;
+            --slate: #6B7A99;
+            --slate-claro: #EEF0F6;
+            --offwhite: #F6F5FB;
+            --bg: #F0EDF8;
+            --cinza-texto: #252535;
+            --cinza-suave: #8A8AA8;
+            --branco: #FFFFFF;
+            --font-display: 'Nunito', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); background: var(--bg); color: var(--cinza-texto); line-height: 1.6; overflow-x: hidden; }
+        ::selection { background: var(--lilas); color: white; }
+
+        header { position: fixed; top: 0; width: 100%; background: rgba(240,237,248,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(184,169,232,0.2); z-index: 1000; animation: slideDown 0.5s ease-out; }
+        @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        nav { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-icon { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--lilas), var(--menta)); display: flex; align-items: center; justify-content: center; }
+        .logo-icon span { font-family: var(--font-display); font-weight: 800; font-size: 16px; color: white; letter-spacing: -0.5px; }
+        .logo-name { font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; color: var(--cinza-texto); }
+        .cta-button { background: linear-gradient(135deg, var(--lilas), var(--lilas-escuro)); color: white; padding: 0.7rem 1.6rem; border-radius: 50px; text-decoration: none; font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; transition: all 0.3s ease; border: none; cursor: pointer; display: inline-block; }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(149,133,207,0.4); }
+
+        .hero { max-width: 1200px; margin: 0 auto; padding: 160px 2rem 100px; text-align: center; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--branco); border: 1px solid rgba(184,169,232,0.4); padding: 0.4rem 1.1rem; border-radius: 50px; font-size: 0.82rem; font-weight: 500; color: var(--slate); margin-bottom: 2rem; animation: fadeInUp 0.6s ease-out 0.1s both; }
+        .hero-badge span { width: 7px; height: 7px; border-radius: 50%; background: var(--menta); display: inline-block; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        .hero h1 { font-family: var(--font-display); font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 800; line-height: 1.15; color: var(--cinza-texto); margin-bottom: 1.5rem; animation: fadeInUp 0.6s ease-out 0.2s both; }
+        .hero h1 em { font-style: normal; background: linear-gradient(135deg, var(--lilas-escuro), var(--menta)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero p { font-size: 1.15rem; color: var(--cinza-suave); max-width: 620px; margin: 0 auto 2.5rem; animation: fadeInUp 0.6s ease-out 0.3s both; }
+        .hero-cta-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; animation: fadeInUp 0.6s ease-out 0.4s both; }
+        .cta-secondary { background: var(--branco); color: var(--cinza-texto); border: 2px solid rgba(184,169,232,0.5); padding: 0.65rem 1.6rem; border-radius: 50px; text-decoration: none; font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; transition: all 0.3s ease; display: inline-block; }
+        .cta-secondary:hover { border-color: var(--lilas); transform: translateY(-2px); }
+
+        .hero-visual { margin-top: 4rem; animation: fadeInUp 0.6s ease-out 0.5s both; }
+        .chat-mockup { background: var(--branco); border-radius: 24px; padding: 28px; max-width: 480px; margin: 0 auto; box-shadow: 0 8px 48px rgba(149,133,207,0.15); text-align: left; }
+        .chat-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--offwhite); }
+        .chat-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--lilas), var(--menta)); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 16px; color: white; flex-shrink: 0; }
+        .chat-info-name { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; color: var(--cinza-texto); }
+        .chat-info-status { font-size: 0.78rem; color: var(--menta); font-weight: 500; }
+        .chat-bubble { margin-bottom: 10px; display: flex; }
+        .chat-bubble.received { justify-content: flex-start; }
+        .chat-bubble.sent { justify-content: flex-end; }
+        .bubble-text { max-width: 78%; padding: 10px 14px; border-radius: 16px; font-size: 0.88rem; line-height: 1.5; }
+        .received .bubble-text { background: var(--offwhite); color: var(--cinza-texto); border-bottom-left-radius: 4px; }
+        .sent .bubble-text { background: linear-gradient(135deg, var(--lilas), var(--lilas-escuro)); color: white; border-bottom-right-radius: 4px; }
+
+        .stats { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+        .stat-item { text-align: center; padding: 2rem 1.5rem; background: var(--branco); border-radius: 20px; box-shadow: 0 2px 16px rgba(149,133,207,0.08); transition: all 0.3s ease; }
+        .stat-item:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(149,133,207,0.18); }
+        .stat-number { font-family: var(--font-display); font-size: 2.8rem; font-weight: 800; background: linear-gradient(135deg, var(--lilas-escuro), var(--menta)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: block; margin-bottom: 0.4rem; }
+        .stat-label { color: var(--cinza-suave); font-size: 0.9rem; }
+
+        .plans { max-width: 1200px; margin: 0 auto; padding: 5rem 2rem; }
+        .section-title { text-align: center; font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; color: var(--cinza-texto); margin-bottom: 0.8rem; }
+        .section-subtitle { text-align: center; color: var(--cinza-suave); font-size: 1.05rem; max-width: 560px; margin: 0 auto 3.5rem; }
+        .plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; align-items: start; }
+        .plan-card { background: var(--branco); border-radius: 24px; padding: 2.5rem; border: 2px solid transparent; transition: all 0.3s ease; position: relative; }
+        .plan-card:hover { border-color: var(--lilas); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(149,133,207,0.15); }
+        .plan-card.featured { border-color: var(--lilas); box-shadow: 0 8px 40px rgba(149,133,207,0.2); }
+        .plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--lilas), var(--lilas-escuro)); color: white; font-family: var(--font-display); font-weight: 700; font-size: 0.75rem; padding: 4px 16px; border-radius: 50px; white-space: nowrap; }
+        .plan-name { font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; color: var(--slate); margin-bottom: 0.5rem; }
+        .plan-price { font-family: var(--font-display); font-weight: 800; font-size: 2.8rem; color: var(--cinza-texto); line-height: 1; margin-bottom: 0.3rem; }
+        .plan-price sup { font-size: 1.2rem; vertical-align: super; }
+        .plan-period { font-size: 0.85rem; color: var(--cinza-suave); margin-bottom: 1.8rem; }
+        .plan-divider { height: 1px; background: var(--offwhite); margin-bottom: 1.8rem; }
+        .plan-features { list-style: none; margin-bottom: 2rem; }
+        .plan-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.92rem; color: var(--cinza-texto); margin-bottom: 0.8rem; line-height: 1.4; }
+        .plan-features li::before { content: '✓'; color: var(--menta); font-weight: 700; font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+        .plan-cta { display: block; text-align: center; padding: 0.85rem; border-radius: 50px; font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: all 0.3s ease; }
+        .plan-cta-primary { background: linear-gradient(135deg, var(--lilas), var(--lilas-escuro)); color: white; }
+        .plan-cta-primary:hover { box-shadow: 0 6px 20px rgba(149,133,207,0.4); transform: translateY(-1px); }
+        .plan-cta-outline { border: 2px solid var(--lilas); color: var(--cinza-texto); }
+        .plan-cta-outline:hover { background: var(--lilas-claro); }
+
+        .features { max-width: 1200px; margin: 0 auto; padding: 5rem 2rem; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .feature-card { background: var(--branco); border-radius: 20px; padding: 2rem; transition: all 0.3s ease; }
+        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(149,133,207,0.12); }
+        .feature-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+        .feature-card h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--cinza-texto); margin-bottom: 0.6rem; }
+        .feature-card p { color: var(--cinza-suave); font-size: 0.92rem; line-height: 1.7; }
+
+        .how-it-works { max-width: 1100px; margin: 0 auto 5rem; padding: 4rem 2rem; background: var(--branco); border-radius: 28px; }
+        .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2.5rem; margin-top: 3.5rem; }
+        .step { text-align: center; }
+        .step-number { font-family: var(--font-display); font-size: 3.5rem; font-weight: 800; color: var(--lilas-claro); -webkit-text-stroke: 2px var(--lilas); line-height: 1; margin-bottom: 1rem; display: block; }
+        .step h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--cinza-texto); margin-bottom: 0.6rem; }
+        .step p { color: var(--cinza-suave); font-size: 0.9rem; line-height: 1.6; }
+
+        .use-cases { max-width: 1200px; margin: 0 auto; padding: 5rem 2rem; }
+        .use-cases-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
+        .use-case { background: var(--branco); border-radius: 18px; padding: 1.8rem; transition: all 0.3s ease; border: 2px solid transparent; }
+        .use-case:hover { border-color: var(--lilas); transform: translateY(-3px); }
+        .use-case-icon { font-size: 2rem; margin-bottom: 0.8rem; display: block; }
+        .use-case h3 { font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--cinza-texto); margin-bottom: 0.5rem; }
+        .use-case p { color: var(--cinza-suave); font-size: 0.88rem; line-height: 1.6; }
+
+        .cta-section { max-width: 860px; margin: 0 auto 6rem; padding: 4rem 2rem; text-align: center; background: linear-gradient(135deg, var(--lilas) 0%, var(--lilas-escuro) 60%, var(--menta) 100%); border-radius: 28px; position: relative; overflow: hidden; }
+        .cta-section::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.04) 20px, rgba(255,255,255,0.04) 40px); }
+        .cta-section-content { position: relative; z-index: 1; }
+        .cta-section h2 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; color: white; margin-bottom: 1rem; }
+        .cta-section p { font-size: 1.1rem; color: rgba(255,255,255,0.9); margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .cta-section .cta-button { background: white; color: var(--lilas-escuro); font-size: 1rem; padding: 0.9rem 2.2rem; }
+        .cta-section .cta-button:hover { background: var(--offwhite); box-shadow: 0 8px 28px rgba(0,0,0,0.15); }
+
+        footer { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 2rem; border-top: 1px solid rgba(184,169,232,0.2); }
+        .footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2rem; }
+        .footer-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .footer-logo-icon { width: 34px; height: 34px; border-radius: 9px; background: linear-gradient(135deg, var(--lilas), var(--menta)); display: flex; align-items: center; justify-content: center; }
+        .footer-logo-icon span { font-family: var(--font-display); font-weight: 800; font-size: 14px; color: white; }
+        .footer-logo-name { font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; color: var(--cinza-texto); }
+        .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .footer-links a { color: var(--cinza-suave); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--lilas-escuro); }
+        .footer-bottom { color: var(--cinza-suave); font-size: 0.85rem; text-align: center; padding-top: 1.5rem; border-top: 1px solid rgba(184,169,232,0.15); }
 
-        /* Responsive */
         @media (max-width: 768px) {
-            .hero {
-                padding: 140px 1.5rem 80px;
-            }
-
-            .hero-logo {
-                width: 160px;
-            }
-
-            .logo-img {
-                height: 35px;
-            }
-
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1.1rem;
-            }
-
-            .hero-cta-group {
-                flex-direction: column;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .footer-links {
-                justify-content: center;
-            }
-
-            .footer-logo-container {
-                flex-direction: column;
-            }
-        }
-
-        /* Smooth scroll */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Selection */
-        ::selection {
-            background: var(--color-primary);
-            color: #ffffff;
+            .hero { padding: 130px 1.5rem 70px; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero p { font-size: 1rem; }
+            .hero-cta-group { flex-direction: column; align-items: center; }
+            .section-title { font-size: 1.8rem; }
+            .how-it-works { margin: 0 1rem 4rem; }
+            .cta-section { margin: 0 1rem 4rem; }
+            .footer-content { flex-direction: column; text-align: center; }
+            .footer-links { justify-content: center; }
         }
     </style>
 </head>
 <body>
-    <div class="glow-orb glow-orb-1"></div>
-    <div class="glow-orb glow-orb-2"></div>
 
     <header>
         <nav>
             <a href="#" class="logo-container">
-                <img src="DM.SMART (1).png" alt="DM Smart Agency Logo" class="logo-img">
-                <span class="logo-text">SMART AGENCY</span>
+                <div class="logo-icon"><span>d.</span></div>
+                <span class="logo-name">digita</span>
             </a>
-            <a href="#contato" class="cta-button">Falar com Especialista</a>
+            <a href="#contato" class="cta-button">falar no whatsapp</a>
         </nav>
     </header>
 
     <main>
         <section class="hero">
-            <img src="DM.SMART (1).png" alt="DM Smart Agency" class="hero-logo">
-            <span class="hero-tag">🤖 AGENTES DE IA PARA NEGÓCIOS</span>
-            <h1>Seu Negócio no<br>Piloto Automático</h1>
-            <p>Transforme atendimento, vendas e gestão com Agentes de IA que trabalham 24/7. Feito sob medida para micro e pequenas empresas que querem crescer.</p>
+            <div class="hero-badge"><span></span> agentes de ia para o seu negócio</div>
+            <h1>seu negócio atendendo<br><em>24 horas por dia</em></h1>
+            <p>Criamos agentes de IA personalizados que atendem, agendam e respondem seus clientes pelo WhatsApp — enquanto você foca no que realmente importa.</p>
             <div class="hero-cta-group">
-                <a href="#contato" class="cta-button">Agendar Demonstração</a>
-                <a href="#como-funciona" class="cta-button cta-secondary">Como Funciona</a>
+                <a href="#contato" class="cta-button">quero meu agente</a>
+                <a href="#como-funciona" class="cta-secondary">como funciona</a>
+            </div>
+            <div class="hero-visual">
+                <div class="chat-mockup">
+                    <div class="chat-header">
+                        <div class="chat-avatar">d.</div>
+                        <div>
+                            <div class="chat-info-name">sua empresa</div>
+                            <div class="chat-info-status">● online agora</div>
+                        </div>
+                    </div>
+                    <div class="chat-bubble received"><div class="bubble-text">Oie! Tudo bem? Sou a Ana, da Clínica Saúde & Vida. Como posso te ajudar? 😊</div></div>
+                    <div class="chat-bubble sent"><div class="bubble-text">Quero agendar uma consulta para amanhã</div></div>
+                    <div class="chat-bubble received"><div class="bubble-text">Claro! Tenho disponibilidade amanhã às 10h ou às 14h. Qual fica melhor pra você?</div></div>
+                    <div class="chat-bubble sent"><div class="bubble-text">14h perfeito!</div></div>
+                    <div class="chat-bubble received"><div class="bubble-text">✅ Agendado! Consulta confirmada para amanhã às 14h. Te espero lá! 😊</div></div>
+                </div>
             </div>
         </section>
 
         <section class="stats">
-            <div class="stat-item">
-                <span class="stat-number">24/7</span>
-                <span class="stat-label">Atendimento Ininterrupto</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">90%</span>
-                <span class="stat-label">Redução de Tarefas Repetitivas</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">3x</span>
-                <span class="stat-label">Mais Produtividade</span>
+            <div class="stat-item"><span class="stat-number">24/7</span><span class="stat-label">atendimento ininterrupto</span></div>
+            <div class="stat-item"><span class="stat-number">5 dias</span><span class="stat-label">para seu agente estar ativo</span></div>
+            <div class="stat-item"><span class="stat-number">100%</span><span class="stat-label">personalizado para o seu negócio</span></div>
+        </section>
+
+        <section class="plans" id="planos">
+            <h2 class="section-title">planos e preços</h2>
+            <p class="section-subtitle">escolha o plano ideal para o momento do seu negócio. você pode migrar quando quiser.</p>
+            <div class="plans-grid">
+                <div class="plan-card">
+                    <div class="plan-name">digita basic</div>
+                    <div class="plan-price"><sup>R$</sup> 350</div>
+                    <div class="plan-period">por mês · ou R$ 950 no trimestre</div>
+                    <div class="plan-divider"></div>
+                    <ul class="plan-features">
+                        <li>agente de ia personalizado para sua empresa</li>
+                        <li>respostas automáticas a perguntas frequentes</li>
+                        <li>apresentação de serviços e preços</li>
+                        <li>transferência para atendente humano</li>
+                        <li>funcionamento 24h por dia, 7 dias por semana</li>
+                        <li>suporte mensal para ajustes de conteúdo</li>
+                    </ul>
+                    <a href="#contato" class="plan-cta plan-cta-outline">começar agora</a>
+                </div>
+                <div class="plan-card featured">
+                    <div class="plan-badge">mais escolhido</div>
+                    <div class="plan-name">digita plus</div>
+                    <div class="plan-price"><sup>R$</sup> 450</div>
+                    <div class="plan-period">por mês · ou R$ 1.250 no trimestre</div>
+                    <div class="plan-divider"></div>
+                    <ul class="plan-features">
+                        <li>tudo do digita basic</li>
+                        <li>agendamentos automáticos via Google Agenda</li>
+                        <li>notificação a cada agendamento realizado</li>
+                        <li>memória de conversa dentro da mesma sessão</li>
+                        <li>follow-up automático para clientes interessados</li>
+                    </ul>
+                    <a href="#contato" class="plan-cta plan-cta-primary">começar agora</a>
+                </div>
+                <div class="plan-card">
+                    <div class="plan-name">digita master</div>
+                    <div class="plan-price" style="font-size:2rem;">sob consulta</div>
+                    <div class="plan-period">valor fechado conforme necessidade</div>
+                    <div class="plan-divider"></div>
+                    <ul class="plan-features">
+                        <li>tudo do digita plus</li>
+                        <li>registro automático de leads em planilha</li>
+                        <li>relatório semanal de atendimentos</li>
+                        <li>integração com instagram direct</li>
+                        <li>suporte prioritário e reunião mensal</li>
+                    </ul>
+                    <a href="#contato" class="plan-cta plan-cta-outline">falar com especialista</a>
+                </div>
             </div>
         </section>
 
-        <section class="features">
-            <h2 class="section-title">Por Que Agentes de IA?</h2>
-            <p class="section-subtitle">Deixe a tecnologia fazer o trabalho pesado enquanto você foca no que realmente importa: crescer seu negócio.</p>
-            
+        <section class="features" id="recursos">
+            <h2 class="section-title">por que agentes de ia?</h2>
+            <p class="section-subtitle">deixe a tecnologia trabalhar enquanto você foca em crescer.</p>
             <div class="features-grid">
-                <div class="feature-card">
-                    <span class="feature-icon">💬</span>
-                    <h3>Atendimento Inteligente</h3>
-                    <p>Responda seus clientes instantaneamente no WhatsApp, Instagram e site. Qualifique leads, agende reuniões e nunca perca uma oportunidade.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <span class="feature-icon">⚡</span>
-                    <h3>Automação de Processos</h3>
-                    <p>Elimine tarefas repetitivas. Pedidos, agendamentos, follow-ups e relatórios rodando no automático enquanto você dorme.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <span class="feature-icon">📊</span>
-                    <h3>Insights em Tempo Real</h3>
-                    <p>Entenda seu cliente como nunca antes. Dados organizados, padrões identificados, decisões mais inteligentes.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <span class="feature-icon">🎯</span>
-                    <h3>Personalização Total</h3>
-                    <p>Cada negócio é único. Criamos agentes sob medida que falam a língua da sua marca e entendem suas regras.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <span class="feature-icon">💰</span>
-                    <h3>Custo-Benefício Real</h3>
-                    <p>Invista menos que um funcionário, ganhe mais que uma equipe. ROI comprovado desde o primeiro mês.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <span class="feature-icon">🔒</span>
-                    <h3>Segurança e Confiabilidade</h3>
-                    <p>Seus dados protegidos, operação estável 24/7. Suporte contínuo e atualizações constantes inclusos.</p>
-                </div>
+                <div class="feature-card"><span class="feature-icon">💬</span><h3>atendimento inteligente</h3><p>responda seus clientes instantaneamente no whatsapp. qualifique leads, agende visitas e nunca perca uma oportunidade de venda.</p></div>
+                <div class="feature-card"><span class="feature-icon">⚡</span><h3>automação de processos</h3><p>agendamentos, confirmações e follow-ups rodando no automático. sem esquecer, sem atrasar, sem erro humano.</p></div>
+                <div class="feature-card"><span class="feature-icon">🎯</span><h3>100% personalizado</h3><p>cada agente fala a língua da sua marca, conhece seus produtos e segue suas regras de atendimento.</p></div>
+                <div class="feature-card"><span class="feature-icon">💰</span><h3>custo acessível</h3><p>invista menos que um funcionário e ganhe mais disponibilidade. resultado real desde o primeiro mês.</p></div>
+                <div class="feature-card"><span class="feature-icon">🔒</span><h3>seguro e confiável</h3><p>seus dados protegidos, operação estável 24/7. suporte contínuo e ajustes inclusos no plano.</p></div>
+                <div class="feature-card"><span class="feature-icon">🚀</span><h3>ativo em 5 dias</h3><p>da contratação ao agente funcionando em até 5 dias úteis. simples, rápido e sem complicação técnica da sua parte.</p></div>
             </div>
         </section>
 
         <section class="how-it-works" id="como-funciona">
-            <h2 class="section-title">Como Funciona</h2>
-            <p class="section-subtitle">Do primeiro contato até seu agente funcionando. Simples, rápido e sem complicação.</p>
-            
+            <h2 class="section-title">como funciona</h2>
+            <p class="section-subtitle">do primeiro contato ao agente ativo. sem burocracia.</p>
             <div class="steps">
-                <div class="step">
-                    <span class="step-number">01</span>
-                    <h3>Diagnóstico</h3>
-                    <p>Conversamos sobre seu negócio, identificamos gargalos e mapeamos oportunidades de automação.</p>
-                </div>
-                
-                <div class="step">
-                    <span class="step-number">02</span>
-                    <h3>Desenvolvimento</h3>
-                    <p>Criamos seu agente personalizado, treinado nas particularidades do seu negócio e da sua marca.</p>
-                </div>
-                
-                <div class="step">
-                    <span class="step-number">03</span>
-                    <h3>Implementação</h3>
-                    <p>Integramos tudo nos seus canais existentes. WhatsApp, Instagram, site - onde você precisa.</p>
-                </div>
-                
-                <div class="step">
-                    <span class="step-number">04</span>
-                    <h3>Otimização</h3>
-                    <p>Monitoramos, ajustamos e melhoramos continuamente. Seu agente evolui junto com seu negócio.</p>
-                </div>
+                <div class="step"><span class="step-number">01</span><h3>diagnóstico</h3><p>você preenche um formulário rápido com as informações do seu negócio. sem reunião obrigatória.</p></div>
+                <div class="step"><span class="step-number">02</span><h3>desenvolvimento</h3><p>criamos seu agente personalizado, treinado nas particularidades do seu negócio e da sua marca.</p></div>
+                <div class="step"><span class="step-number">03</span><h3>ativação</h3><p>integramos no seu whatsapp e você já começa a atender. em até 5 dias úteis após a contratação.</p></div>
+                <div class="step"><span class="step-number">04</span><h3>otimização</h3><p>monitoramos e ajustamos continuamente. seu agente evolui junto com o seu negócio.</p></div>
             </div>
         </section>
 
         <section class="use-cases">
-            <h2 class="section-title">Casos de Uso</h2>
-            <p class="section-subtitle">Veja como diferentes negócios estão usando IA para crescer</p>
-            
+            <h2 class="section-title">para quem é a digita?</h2>
+            <p class="section-subtitle">qualquer negócio que atende pelo whatsapp pode ter um agente de ia.</p>
             <div class="use-cases-grid">
-                <div class="use-case">
-                    <span class="use-case-icon">🍽️</span>
-                    <h3>Restaurantes</h3>
-                    <p>Pedidos automáticos pelo WhatsApp, cardápio digital interativo e gestão de reservas sem erro.</p>
-                </div>
-                
-                <div class="use-case">
-                    <span class="use-case-icon">🏥</span>
-                    <h3>Clínicas e Consultórios</h3>
-                    <p>Agendamento inteligente, confirmações automáticas e redução de faltas em até 70%.</p>
-                </div>
-                
-                <div class="use-case">
-                    <span class="use-case-icon">🛍️</span>
-                    <h3>E-commerce</h3>
-                    <p>Atendimento consultivo 24/7, recomendações personalizadas e recuperação de carrinhos abandonados.</p>
-                </div>
-                
-                <div class="use-case">
-                    <span class="use-case-icon">💼</span>
-                    <h3>Serviços B2B</h3>
-                    <p>Qualificação de leads, agendamento de reuniões e follow-up automático de propostas.</p>
-                </div>
-                
-                <div class="use-case">
-                    <span class="use-case-icon">🏋️</span>
-                    <h3>Academias e Estúdios</h3>
-                    <p>Check-in automatizado, lembretes de treino e gestão de planos personalizados.</p>
-                </div>
-                
-                <div class="use-case">
-                    <span class="use-case-icon">🏠</span>
-                    <h3>Imobiliárias</h3>
-                    <p>Qualificação de interessados, agendamento de visitas e acompanhamento de negociações.</p>
-                </div>
+                <div class="use-case"><span class="use-case-icon">🍽️</span><h3>restaurantes e delivery</h3><p>pedidos automáticos, cardápio interativo e reservas sem erro.</p></div>
+                <div class="use-case"><span class="use-case-icon">🏥</span><h3>clínicas e consultórios</h3><p>agendamento inteligente e confirmações automáticas.</p></div>
+                <div class="use-case"><span class="use-case-icon">🛍️</span><h3>lojas e e-commerce</h3><p>atendimento consultivo 24/7 e recuperação de clientes.</p></div>
+                <div class="use-case"><span class="use-case-icon">✂️</span><h3>salões e estúdios</h3><p>agenda sempre organizada, sem telefone tocando sem parar.</p></div>
+                <div class="use-case"><span class="use-case-icon">🏋️</span><h3>academias e personal</h3><p>gestão de horários e lembretes automáticos para alunos.</p></div>
+                <div class="use-case"><span class="use-case-icon">💼</span><h3>serviços em geral</h3><p>qualificação de leads e follow-up automático de propostas.</p></div>
             </div>
         </section>
 
         <section class="cta-section" id="contato">
             <div class="cta-section-content">
-                <h2>Pronto Para Transformar Seu Negócio?</h2>
-                <p>Agende uma demonstração gratuita e veja seu agente de IA funcionando na prática.</p>
-                <a href="https://wa.me/5551981984260?text=Olá! Vim do site e quero conhecer os agentes de IA" class="cta-button" target="_blank">Falar no WhatsApp</a>
+                <h2>pronto para automatizar seu atendimento?</h2>
+                <p>fale com a gente agora e veja seu agente funcionando em até 5 dias.</p>
+                <a href="https://wa.me/5551981984260?text=Olá! Vim do site da digita e quero saber mais sobre os agentes de IA" class="cta-button" target="_blank">falar no whatsapp</a>
             </div>
         </section>
     </main>
 
     <footer>
         <div class="footer-content">
-            <div class="footer-logo-container">
-                <img src="DM.SMART (1).png" alt="DM Smart Agency" class="footer-logo-img">
-                <span class="footer-logo-text">SMART AGENCY</span>
-            </div>
+            <a href="#" class="footer-logo">
+                <div class="footer-logo-icon"><span>d.</span></div>
+                <span class="footer-logo-name">digita</span>
+            </a>
             <div class="footer-links">
-                <a href="#como-funciona">Como Funciona</a>
-                <a href="#contato">Contato</a>
-                <a href="https://instagram.com/dm.smartagency" target="_blank">Instagram</a>
+                <a href="#planos">planos</a>
+                <a href="#como-funciona">como funciona</a>
+                <a href="#contato">contato</a>
+                <a href="https://instagram.com/dm.smartagency" target="_blank">instagram</a>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 DM Smart Agency. Todos os direitos reservados.</p>
+            <p>&copy; 2026 digita. todos os direitos reservados.</p>
         </div>
     </footer>
 
     <script>
-        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
-
-        // Add animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
-                }
+                if (entry.isIntersecting) entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
             });
-        }, observerOptions);
-
-        // Observe elements
-        document.querySelectorAll('.feature-card, .step, .use-case, .stat-item').forEach(el => {
-            observer.observe(el);
-        });
+        }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
+        document.querySelectorAll('.feature-card, .step, .use-case, .stat-item, .plan-card').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
