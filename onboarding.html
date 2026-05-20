@@ -451,13 +451,18 @@
                     <textarea name="duvidas" placeholder="Alguma dúvida ou pedido especial para a configuração?"></textarea>
                 </div>
 
-                <div style="background:var(--offwhite);border-radius:14px;padding:1.2rem;margin-bottom:1.5rem;font-size:0.88rem;color:var(--cinza-suave);line-height:1.6;">
-                    Ao enviar, você confirma que leu e aceita nossos <a href="https://sites.google.com/view/agentedigita" target="_blank" style="color:var(--lilas-escuro);font-weight:600;">Termos e Condições</a>.
+                <div style="background:var(--offwhite);border-radius:14px;padding:1.2rem;margin-bottom:1.5rem;">
+                    <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;">
+                        <input type="checkbox" id="aceite-termos" onchange="toggleSubmit()" style="width:20px;height:20px;accent-color:var(--lilas-escuro);flex-shrink:0;margin-top:2px;cursor:pointer;">
+                        <span style="font-size:0.88rem;color:var(--cinza-suave);line-height:1.6;">
+                            Li e aceito os <a href="termos.html" target="_blank" style="color:var(--lilas-escuro);font-weight:600;">Termos e Condições</a> da digita.
+                        </span>
+                    </label>
                 </div>
 
                 <div class="form-actions">
                     <button type="button" class="btn-prev" onclick="prevStep(6)">← anterior</button>
-                    <button type="submit" class="btn-submit">enviar ✓</button>
+                    <button type="submit" class="btn-submit" id="btn-submit" disabled style="opacity:0.4;cursor:not-allowed;">enviar ✓</button>
                 </div>
             </div>
         </div>
@@ -555,6 +560,14 @@
             selectedDays = selectedDays.filter(d => d !== day);
         }
         document.getElementById('dias-input').value = selectedDays.join(', ');
+    }
+
+    function toggleSubmit() {
+        const aceite = document.getElementById('aceite-termos').checked;
+        const btn = document.getElementById('btn-submit');
+        btn.disabled = !aceite;
+        btn.style.opacity = aceite ? '1' : '0.4';
+        btn.style.cursor = aceite ? 'pointer' : 'not-allowed';
     }
 
     document.getElementById('onboarding-form').addEventListener('submit', function(e) {
