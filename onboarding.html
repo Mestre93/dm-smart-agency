@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>digita — configure seu agente</title>
+    <meta name="description" content="Preencha o formulário e configure seu agente de IA personalizado.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --lilas: #B8A9E8;
+            --lilas-escuro: #9585CF;
+            --lilas-claro: #EAE5FF;
+            --menta: #9ED8C0;
+            --slate: #6B7A99;
+            --slate-claro: #EEF0F6;
+            --offwhite: #F6F5FB;
+            --bg: #F0EDF8;
+            --cinza-texto: #252535;
+            --cinza-suave: #8A8AA8;
+            --branco: #FFFFFF;
+            --font-display: 'Nunito', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); background: var(--bg); color: var(--cinza-texto); line-height: 1.6; overflow-x: hidden; }
+        ::selection { background: var(--lilas); color: white; }
+
+        /* HEADER */
+        header { position: fixed; top: 0; width: 100%; background: rgba(240,237,248,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(184,169,232,0.2); z-index: 1000; }
+        nav { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-icon { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--lilas), var(--menta)); display: flex; align-items: center; justify-content: center; }
+        .logo-icon span { font-family: var(--font-display); font-weight: 800; font-size: 16px; color: white; }
+        .logo-name { font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; color: var(--cinza-texto); }
+        .nav-back { color: var(--cinza-suave); text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+        .nav-back:hover { color: var(--lilas-escuro); }
+
+        /* HERO ONBOARDING */
+        .onboarding-hero { max-width: 760px; margin: 0 auto; padding: 140px 2rem 3rem; text-align: center; }
+        .onboarding-hero h1 { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: var(--cinza-texto); margin-bottom: 1rem; line-height: 1.2; }
+        .onboarding-hero h1 em { font-style: normal; background: linear-gradient(135deg, var(--lilas-escuro), var(--menta)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .onboarding-hero p { color: var(--cinza-suave); font-size: 1rem; max-width: 520px; margin: 0 auto; }
+
+        /* PROGRESS */
+        .progress-container { max-width: 760px; margin: 2rem auto 0; padding: 0 2rem; }
+        .progress-steps { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 0.6rem; }
+        .progress-step { display: flex; align-items: center; gap: 0; }
+        .step-dot { width: 32px; height: 32px; border-radius: 50%; background: var(--branco); border: 2px solid var(--lilas-claro); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; color: var(--cinza-suave); transition: all 0.3s ease; flex-shrink: 0; }
+        .step-dot.active { background: linear-gradient(135deg, var(--lilas), var(--lilas-escuro)); border-color: var(--lilas); color: white; box-shadow: 0 4px 12px rgba(149,133,207,0.3); }
+        .step-dot.done { background: var(--menta); border-color: var(--menta); color: white; }
+        .step-line { width: 40px; height: 2px; background: var(--lilas-claro); transition: background 0.3s; }
+        .step-line.done { background: var(--menta); }
+        .progress-label { text-align: center; font-size: 0.82rem; color: var(--cinza-suave); margin-top: 0.5rem; }
+        .progress-label span { color: var(--lilas-escuro); font-weight: 600; }
+
+        /* FORM CONTAINER */
+        .form-container { max-width: 760px; margin: 2rem auto 6rem; padding: 0 2rem; }
+
+        .form-step { display: none; animation: fadeInUp 0.4s ease-out; }
+        .form-step.active { display: block; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .form-card { background: var(--branco); border-radius: 24px; padding: 2.5rem; box-shadow: 0 4px 32px rgba(149,133,207,0.1); }
+
+        .step-title { font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; color: var(--cinza-texto); margin-bottom: 0.4rem; }
+        .step-desc { color: var(--cinza-suave); font-size: 0.92rem; margin-bottom: 2rem; }
+
+        .form-group { margin-bottom: 1.4rem; }
+        .form-group label { display: block; font-family: var(--font-display); font-weight: 600; font-size: 0.92rem; color: var(--cinza-texto); margin-bottom: 0.5rem; }
+        .form-group label .required { color: var(--lilas-escuro); margin-left: 2px; }
+        .form-group .hint { font-size: 0.82rem; color: var(--cinza-suave); margin-top: 0.3rem; }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--lilas-claro);
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--cinza-texto);
+            background: var(--offwhite);
+            transition: all 0.2s ease;
+            outline: none;
+            appearance: none;
+        }
+        input:focus, textarea:focus, select:focus { border-color: var(--lilas); background: var(--branco); box-shadow: 0 0 0 4px rgba(184,169,232,0.15); }
+        textarea { min-height: 120px; resize: vertical; }
+
+        /* CHECKBOX & RADIO */
+        .check-group { display: flex; flex-direction: column; gap: 0.6rem; }
+        .check-item { display: flex; align-items: center; gap: 10px; padding: 0.7rem 1rem; border: 2px solid var(--lilas-claro); border-radius: 12px; cursor: pointer; transition: all 0.2s; background: var(--offwhite); }
+        .check-item:hover { border-color: var(--lilas); background: var(--branco); }
+        .check-item input[type="checkbox"],
+        .check-item input[type="radio"] { width: 18px; height: 18px; accent-color: var(--lilas-escuro); flex-shrink: 0; cursor: pointer; }
+        .check-item span { font-size: 0.92rem; color: var(--cinza-texto); }
+        .check-item.selected { border-color: var(--lilas); background: var(--lilas-claro); }
+
+        /* DIAS DA SEMANA */
+        .days-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .day-btn { padding: 0.5rem 1rem; border: 2px solid var(--lilas-claro); border-radius: 50px; font-family: var(--font-display); font-weight: 600; font-size: 0.85rem; color: var(--cinza-suave); cursor: pointer; background: var(--offwhite); transition: all 0.2s; user-select: none; }
+        .day-btn.selected { background: linear-gradient(135deg, var(--lilas), var(--lilas-escuro)); border-color: var(--lilas); color: white; }
+
+        /* PLANO SELECTOR */
+        .plan-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .plan-option { border: 2px solid var(--lilas-claro); border-radius: 16px; padding: 1.2rem; cursor: pointer; transition: all 0.2s; background: var(--offwhite); text-align: center; }
+        .plan-option:hover { border-color: var(--lilas); }
+        .plan-option.selected { border-color: var(--lilas); background: var(--lilas-claro); }
+        .plan-option-name { font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; color: var(--cinza-texto); margin-bottom: 0.3rem; }
+        .plan-option-price { font-size: 0.82rem; color: var(--cinza-suave); }
+
+        /* BUTTONS */
+        .form-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; gap: 1rem; }
+        .btn-next { background: linear-gradient(135deg, var(--lilas), var(--lilas-escuro)); color: white; padding: 0.85rem 2rem; border-radius: 50px; font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; border: none; cursor: pointer; transition: all 0.3s ease; }
+        .btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(149,133,207,0.4); }
+        .btn-prev { background: transparent; color: var(--cinza-suave); padding: 0.85rem 1.5rem; border-radius: 50px; font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; border: 2px solid var(--lilas-claro); cursor: pointer; transition: all 0.2s; }
+        .btn-prev:hover { border-color: var(--lilas); color: var(--cinza-texto); }
+        .btn-submit { background: linear-gradient(135deg, var(--menta), #7DD4B0); color: white; padding: 0.85rem 2.5rem; border-radius: 50px; font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; border: none; cursor: pointer; transition: all 0.3s ease; }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(158,216,192,0.5); }
+
+        /* SEÇÃO CONDICIONAL */
+        .conditional-section { display: none; }
+        .conditional-section.visible { display: block; }
+
+        /* SUCESSO */
+        .success-screen { display: none; text-align: center; padding: 4rem 2rem; }
+        .success-screen.visible { display: block; animation: fadeInUp 0.5s ease-out; }
+        .success-icon { font-size: 4rem; margin-bottom: 1.5rem; }
+        .success-screen h2 { font-family: var(--font-display); font-weight: 800; font-size: 2rem; color: var(--cinza-texto); margin-bottom: 1rem; }
+        .success-screen p { color: var(--cinza-suave); font-size: 1rem; max-width: 460px; margin: 0 auto 2rem; }
+        .btn-home { background: linear-gradient(135deg, var(--lilas), var(--lilas-escuro)); color: white; padding: 0.85rem 2rem; border-radius: 50px; font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; text-decoration: none; display: inline-block; transition: all 0.3s; }
+        .btn-home:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(149,133,207,0.4); }
+
+        /* FOOTER */
+        footer { max-width: 1200px; margin: 0 auto; padding: 2rem; border-top: 1px solid rgba(184,169,232,0.2); text-align: center; }
+        .footer-bottom { color: var(--cinza-suave); font-size: 0.85rem; }
+
+        @media (max-width: 600px) {
+            .plan-selector { grid-template-columns: 1fr; }
+            .form-card { padding: 1.5rem; }
+            .form-actions { flex-direction: column-reverse; }
+            .btn-next, .btn-prev, .btn-submit { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="index.html" class="logo-container">
+            <div class="logo-icon"><span>d.</span></div>
+            <span class="logo-name">digita</span>
+        </a>
+        <a href="index.html" class="nav-back">← voltar ao site</a>
+    </nav>
+</header>
+
+<div class="onboarding-hero">
+    <h1>vamos configurar<br><em>seu agente</em></h1>
+    <p>Preencha com calma. Essas informações são a base para criarmos um agente que representa sua empresa com qualidade.</p>
+</div>
+
+<div class="progress-container">
+    <div class="progress-steps">
+        <div class="progress-step">
+            <div class="step-dot active" id="dot-1">1</div>
+            <div class="step-line" id="line-1"></div>
+        </div>
+        <div class="progress-step">
+            <div class="step-dot" id="dot-2">2</div>
+            <div class="step-line" id="line-2"></div>
+        </div>
+        <div class="progress-step">
+            <div class="step-dot" id="dot-3">3</div>
+            <div class="step-line" id="line-3"></div>
+        </div>
+        <div class="progress-step">
+            <div class="step-dot" id="dot-4">4</div>
+            <div class="step-line" id="line-4"></div>
+        </div>
+        <div class="progress-step">
+            <div class="step-dot" id="dot-5">5</div>
+            <div class="step-line" id="line-5"></div>
+        </div>
+        <div class="progress-step">
+            <div class="step-dot" id="dot-6">6</div>
+        </div>
+    </div>
+    <p class="progress-label"><span id="step-label">empresa</span></p>
+</div>
+
+<div class="form-container">
+    <form id="onboarding-form" action="https://formspree.io/f/maqkqkpz" method="POST">
+
+        <!-- ETAPA 1: EMPRESA -->
+        <div class="form-step active" id="step-1">
+            <div class="form-card">
+                <div class="step-title">sobre você e sua empresa</div>
+                <div class="step-desc">vamos começar com o básico.</div>
+
+                <div class="form-group">
+                    <label>Nome completo <span class="required">*</span></label>
+                    <input type="text" name="nome_completo" placeholder="Seu nome" required>
+                </div>
+                <div class="form-group">
+                    <label>Nome da empresa <span class="required">*</span></label>
+                    <input type="text" name="nome_empresa" placeholder="Nome da sua empresa" required>
+                </div>
+                <div class="form-group">
+                    <label>Segmento de atuação <span class="required">*</span></label>
+                    <input type="text" name="segmento" placeholder="Ex: loja de roupas, clínica odontológica, salão de beleza..." required>
+                </div>
+                <div class="form-group">
+                    <label>Plano contratado <span class="required">*</span></label>
+                    <div class="plan-selector" id="plan-selector">
+                        <div class="plan-option" data-plan="digita basic" onclick="selectPlan(this)">
+                            <div class="plan-option-name">digita basic</div>
+                            <div class="plan-option-price">R$ 350/mês</div>
+                        </div>
+                        <div class="plan-option" data-plan="digita plus" onclick="selectPlan(this)">
+                            <div class="plan-option-name">digita plus</div>
+                            <div class="plan-option-price">R$ 450/mês</div>
+                        </div>
+                        <div class="plan-option" data-plan="digita master" onclick="selectPlan(this)">
+                            <div class="plan-option-name">digita master</div>
+                            <div class="plan-option-price">sob consulta</div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="plano" id="plano-input">
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp comercial <span class="required">*</span></label>
+                    <input type="tel" name="whatsapp" placeholder="(51) 99999-9999" required>
+                </div>
+                <div class="form-group">
+                    <label>Endereço da empresa</label>
+                    <input type="text" name="endereco" placeholder="Deixe em branco se for um negócio online">
+                </div>
+                <div class="form-group">
+                    <label>Site ou Instagram</label>
+                    <input type="text" name="site_instagram" placeholder="@suaempresa ou www.seusite.com.br">
+                </div>
+
+                <div class="form-actions">
+                    <span></span>
+                    <button type="button" class="btn-next" onclick="nextStep(1)">próximo →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ETAPA 2: HORÁRIOS -->
+        <div class="form-step" id="step-2">
+            <div class="form-card">
+                <div class="step-title">horário de funcionamento</div>
+                <div class="step-desc">informe os dias e horários em que sua empresa atende.</div>
+
+                <div class="form-group">
+                    <label>Dias de funcionamento <span class="required">*</span></label>
+                    <div class="days-grid" id="days-grid">
+                        <div class="day-btn" onclick="toggleDay(this)" data-day="segunda">seg</div>
+                        <div class="day-btn" onclick="toggleDay(this)" data-day="terça">ter</div>
+                        <div class="day-btn" onclick="toggleDay(this)" data-day="quarta">qua</div>
+                        <div class="day-btn" onclick="toggleDay(this)" data-day="quinta">qui</div>
+                        <div class="day-btn" onclick="toggleDay(this)" data-day="sexta">sex</div>
+                        <div class="day-btn" onclick="toggleDay(this)" data-day="sábado">sáb</div>
+                        <div class="day-btn" onclick="toggleDay(this)" data-day="domingo">dom</div>
+                    </div>
+                    <input type="hidden" name="dias_funcionamento" id="dias-input">
+                </div>
+                <div class="form-group">
+                    <label>Horário de funcionamento <span class="required">*</span></label>
+                    <textarea name="horario" placeholder="Ex: Segunda a sexta das 9h às 18h. Sábado das 9h às 13h. Intervalo de almoço das 12h às 13h." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Funciona em feriados?</label>
+                    <div class="check-group">
+                        <label class="check-item"><input type="radio" name="feriados" value="sim_normal"> <span>Sim, normalmente</span></label>
+                        <label class="check-item"><input type="radio" name="feriados" value="sim_reduzido"> <span>Sim, com horário reduzido</span></label>
+                        <label class="check-item"><input type="radio" name="feriados" value="nao"> <span>Não</span></label>
+                        <label class="check-item"><input type="radio" name="feriados" value="depende"> <span>Depende do feriado</span></label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-prev" onclick="prevStep(2)">← anterior</button>
+                    <button type="button" class="btn-next" onclick="nextStep(2)">próximo →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ETAPA 3: SERVIÇOS -->
+        <div class="form-step" id="step-3">
+            <div class="form-card">
+                <div class="step-title">serviços e produtos</div>
+                <div class="step-desc">o agente precisa conhecer bem o que sua empresa oferece.</div>
+
+                <div class="form-group">
+                    <label>O que sua empresa oferece? <span class="required">*</span></label>
+                    <textarea name="servicos" placeholder="Descreva seus principais produtos ou serviços..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>O que sua empresa NÃO oferece mas costumam perguntar?</label>
+                    <textarea name="nao_oferece" placeholder="Ex: Não fazemos entregas, não trabalhamos com determinada marca..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Faixa de preço dos produtos ou serviços</label>
+                    <input type="text" name="faixa_preco" placeholder="Ex: Serviços entre R$50 e R$300">
+                </div>
+                <div class="form-group">
+                    <label>Formas de pagamento aceitas <span class="required">*</span></label>
+                    <div class="check-group">
+                        <label class="check-item"><input type="checkbox" name="pagamento" value="dinheiro"> <span>Dinheiro</span></label>
+                        <label class="check-item"><input type="checkbox" name="pagamento" value="pix"> <span>Pix</span></label>
+                        <label class="check-item"><input type="checkbox" name="pagamento" value="debito"> <span>Débito</span></label>
+                        <label class="check-item"><input type="checkbox" name="pagamento" value="credito_avista"> <span>Crédito à vista</span></label>
+                        <label class="check-item"><input type="checkbox" name="pagamento" value="credito_parcelado"> <span>Crédito parcelado</span></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Detalhes sobre pagamento</label>
+                    <input type="text" name="detalhes_pagamento" placeholder="Ex: Parcelamos em até 3x sem juros no crédito">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-prev" onclick="prevStep(3)">← anterior</button>
+                    <button type="button" class="btn-next" onclick="nextStep(3)">próximo →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ETAPA 4: PERGUNTAS FREQUENTES -->
+        <div class="form-step" id="step-4">
+            <div class="form-card">
+                <div class="step-title">perguntas frequentes</div>
+                <div class="step-desc">pense nas perguntas que seus clientes fazem com mais frequência.</div>
+
+                <div class="form-group">
+                    <label>Liste até 5 perguntas e respostas <span class="required">*</span></label>
+                    <textarea name="perguntas_frequentes" style="min-height:180px" placeholder="P: Vocês fazem entrega?&#10;R: Sim, entregamos para toda a cidade com frete fixo de R$10.&#10;&#10;P: Precisa agendar?&#10;R: Sim, trabalhamos somente com horário marcado." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Informações importantes antes do contato</label>
+                    <textarea name="info_importante" placeholder="Ex: trazer documento, fazer cadastro prévio, política de cancelamento..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-prev" onclick="prevStep(4)">← anterior</button>
+                    <button type="button" class="btn-next" onclick="nextStep(4)">próximo →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ETAPA 5: IDENTIDADE DO AGENTE -->
+        <div class="form-step" id="step-5">
+            <div class="form-card">
+                <div class="step-title">identidade do agente</div>
+                <div class="step-desc">aqui definimos a personalidade e o nome do seu agente.</div>
+
+                <div class="form-group">
+                    <label>Nome do agente <span class="required">*</span></label>
+                    <input type="text" name="nome_agente" placeholder="Ex: Ana, Carlos, Ju, Max..." required>
+                </div>
+                <div class="form-group">
+                    <label>Tom de atendimento <span class="required">*</span></label>
+                    <div class="check-group">
+                        <label class="check-item"><input type="radio" name="tom" value="formal"> <span>Formal e profissional</span></label>
+                        <label class="check-item"><input type="radio" name="tom" value="amigavel"> <span>Amigável e descontraído</span></label>
+                        <label class="check-item"><input type="radio" name="tom" value="carinhoso"> <span>Carinhoso e acolhedor</span></label>
+                        <label class="check-item"><input type="radio" name="tom" value="direto"> <span>Direto e objetivo</span></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Palavras ou expressões que representam sua marca</label>
+                    <textarea name="expressoes_marca" placeholder="Ex: sempre usar 'amor', chamar de 'querida', usar emojis específicos..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Palavras ou expressões que o agente NUNCA deve usar</label>
+                    <textarea name="expressoes_proibidas" placeholder="Ex: palavras informais, gírias específicas..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Nome de quem assumirá o atendimento humano <span class="required">*</span></label>
+                    <input type="text" name="nome_humano" placeholder="Nome do atendente responsável" required>
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp que receberá notificação de transferência <span class="required">*</span></label>
+                    <input type="tel" name="whatsapp_notificacao" placeholder="(51) 99999-9999" required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-prev" onclick="prevStep(5)">← anterior</button>
+                    <button type="button" class="btn-next" onclick="nextStep(5)">próximo →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ETAPA 6: INTEGRAÇÕES + ENVIO -->
+        <div class="form-step" id="step-6">
+            <div class="form-card">
+                <div class="step-title">finalizando</div>
+                <div class="step-desc">quase lá! só mais algumas informações.</div>
+
+                <!-- SEÇÃO CONDICIONAL PARA PLUS E MASTER -->
+                <div id="integracao-section" class="conditional-section">
+                    <div style="background:var(--lilas-claro);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1.5rem;">
+                        <p style="font-family:var(--font-display);font-weight:700;font-size:0.88rem;color:var(--lilas-escuro);">✦ seção exclusiva do seu plano</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Usa Google Agenda para agendamentos?</label>
+                        <div class="check-group">
+                            <label class="check-item"><input type="radio" name="google_agenda" value="sim_tenho"> <span>Sim, já tenho e quero integrar</span></label>
+                            <label class="check-item"><input type="radio" name="google_agenda" value="nao_tenho"> <span>Não tenho, preciso criar</span></label>
+                            <label class="check-item"><input type="radio" name="google_agenda" value="nao_uso"> <span>Não uso agendamento</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail da conta Google do calendário</label>
+                        <input type="text" name="email_google" placeholder="seuemail@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Tempo médio de cada atendimento</label>
+                        <div class="check-group">
+                            <label class="check-item"><input type="radio" name="tempo_atendimento" value="30min"> <span>30 minutos</span></label>
+                            <label class="check-item"><input type="radio" name="tempo_atendimento" value="1h"> <span>1 hora</span></label>
+                            <label class="check-item"><input type="radio" name="tempo_atendimento" value="2h"> <span>2 horas</span></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Antecedência mínima para agendamento</label>
+                        <div class="check-group">
+                            <label class="check-item"><input type="radio" name="antecedencia" value="mesmo_dia"> <span>No mesmo dia</span></label>
+                            <label class="check-item"><input type="radio" name="antecedencia" value="1_dia"> <span>1 dia antes</span></label>
+                            <label class="check-item"><input type="radio" name="antecedencia" value="3_dias"> <span>3 dias antes</span></label>
+                            <label class="check-item"><input type="radio" name="antecedencia" value="1_semana"> <span>1 semana antes</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Informações adicionais que o agente precisa saber</label>
+                    <textarea name="info_adicional" placeholder="Qualquer detalhe específico da sua empresa que não foi coberto acima..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Dúvidas ou pedidos especiais</label>
+                    <textarea name="duvidas" placeholder="Alguma dúvida ou pedido especial para a configuração?"></textarea>
+                </div>
+
+                <div style="background:var(--offwhite);border-radius:14px;padding:1.2rem;margin-bottom:1.5rem;font-size:0.88rem;color:var(--cinza-suave);line-height:1.6;">
+                    Ao enviar, você confirma que leu e aceita nossos <a href="https://sites.google.com/view/agentedigita" target="_blank" style="color:var(--lilas-escuro);font-weight:600;">Termos e Condições</a>.
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-prev" onclick="prevStep(6)">← anterior</button>
+                    <button type="submit" class="btn-submit">enviar ✓</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <!-- SUCESSO -->
+    <div class="success-screen" id="success-screen">
+        <div class="success-icon">🎉</div>
+        <h2>recebemos tudo!</h2>
+        <p>Em até 48 horas úteis entraremos em contato para confirmar os detalhes e iniciar a configuração do seu agente.</p>
+        <a href="index.html" class="btn-home">voltar ao site</a>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-bottom">
+        <p>&copy; 2026 digita. você vende, a gente digita.</p>
+    </div>
+</footer>
+
+<script>
+    const stepLabels = ['empresa', 'horários', 'serviços', 'perguntas', 'agente', 'finalizar'];
+    let currentStep = 1;
+    let selectedDays = [];
+    let selectedPlan = '';
+
+    function updateProgress(step) {
+        for (let i = 1; i <= 6; i++) {
+            const dot = document.getElementById('dot-' + i);
+            const line = document.getElementById('line-' + i);
+            if (i < step) {
+                dot.className = 'step-dot done';
+                dot.innerHTML = '✓';
+                if (line) line.className = 'step-line done';
+            } else if (i === step) {
+                dot.className = 'step-dot active';
+                dot.innerHTML = i;
+                if (line) line.className = 'step-line';
+            } else {
+                dot.className = 'step-dot';
+                dot.innerHTML = i;
+                if (line) line.className = 'step-line';
+            }
+        }
+        document.getElementById('step-label').textContent = stepLabels[step - 1];
+    }
+
+    function nextStep(current) {
+        if (current === 1) {
+            const nome = document.querySelector('[name="nome_completo"]').value;
+            const empresa = document.querySelector('[name="nome_empresa"]').value;
+            const segmento = document.querySelector('[name="segmento"]').value;
+            const whatsapp = document.querySelector('[name="whatsapp"]').value;
+            if (!nome || !empresa || !segmento || !whatsapp || !selectedPlan) {
+                alert('Por favor, preencha todos os campos obrigatórios e selecione um plano.');
+                return;
+            }
+        }
+        document.getElementById('step-' + current).classList.remove('active');
+        currentStep = current + 1;
+        document.getElementById('step-' + currentStep).classList.add('active');
+        updateProgress(currentStep);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function prevStep(current) {
+        document.getElementById('step-' + current).classList.remove('active');
+        currentStep = current - 1;
+        document.getElementById('step-' + currentStep).classList.add('active');
+        updateProgress(currentStep);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectPlan(el) {
+        document.querySelectorAll('.plan-option').forEach(o => o.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedPlan = el.dataset.plan;
+        document.getElementById('plano-input').value = selectedPlan;
+
+        const integSection = document.getElementById('integracao-section');
+        if (selectedPlan === 'digita plus' || selectedPlan === 'digita master') {
+            integSection.classList.add('visible');
+        } else {
+            integSection.classList.remove('visible');
+        }
+    }
+
+    function toggleDay(el) {
+        el.classList.toggle('selected');
+        const day = el.dataset.day;
+        if (el.classList.contains('selected')) {
+            selectedDays.push(day);
+        } else {
+            selectedDays = selectedDays.filter(d => d !== day);
+        }
+        document.getElementById('dias-input').value = selectedDays.join(', ');
+    }
+
+    document.getElementById('onboarding-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        fetch(this.action, {
+            method: 'POST',
+            body: formData
+        }).then(() => {
+            document.getElementById('onboarding-form').style.display = 'none';
+            document.querySelector('.progress-container').style.display = 'none';
+            document.getElementById('success-screen').classList.add('visible');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }).catch(() => {
+            document.getElementById('onboarding-form').style.display = 'none';
+            document.querySelector('.progress-container').style.display = 'none';
+            document.getElementById('success-screen').classList.add('visible');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+</script>
+
+</body>
+</html>
